@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert.Models
+namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 {
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
     public class ApimServiceName

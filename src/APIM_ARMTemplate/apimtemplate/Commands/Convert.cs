@@ -1,12 +1,7 @@
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using apimtemplate.Creator.Utilities;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common;
-using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Create;
-using Newtonsoft.Json;
+using System;
+using System.IO;
 
 namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 {
@@ -46,24 +41,10 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
                     }
 
                     // For now work on the backends
-                    foreach (var beJsonFile in Directory.GetFiles(templatePath, "*-backends.tempalte.json"))
+                    foreach (var beJsonFile in ConverterExtensions.GetBackendsTemplateJson(templatePath))
                     {
-                        var backendTemplate = DeserializeBackendTemplate(beJsonFile);
-
-                        var creatorConfig = new CreatorConfig();
-
-                        foreach (var beResource in backendTemplate.Resources)
-                        {
-                            creatorConfig.backends.Add(new BackendTemplateProperties()
-                            {
-                                title = beResource.Name,
-                                url = beResource.Properties.Url,
-                                protocol = beResource.
-                            });
-                        }
-
+                        new BackendTemplateConverter(templatePath);
                     }
-
 
 
                     Console.WriteLine("Press any key to exit process:");
@@ -78,16 +59,5 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
                 }
             });
         }
-
-        private Models.BackendTemplate DeserializeBackendTemplate(string templatePath)
-        {
-            using (StreamReader r = new StreamReader(templatePath))
-            {
-                string backendJson = r.ReadToEnd();
-                Models.BackendTemplate backendTemplate = JsonConvert.DeserializeObject<Models.BackendTemplate>(backendJson);
-                return backendTemplate;
-            }
-        }
-
     }
 }
