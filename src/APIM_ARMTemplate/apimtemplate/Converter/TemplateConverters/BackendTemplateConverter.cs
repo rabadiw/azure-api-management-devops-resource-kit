@@ -13,19 +13,35 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 
         public string BackendTemplateFile { get; }
 
-        public Task<Create.CreatorConfig> ConvertAsync()
+        public Task<Create.CreatorConfig> ConvertAsync(Create.CreatorConfig creatorConfig = null)
         {
             var backendTemplate = ConverterExtensions.DeserializeBackendTemplate(BackendTemplateFile);
 
-            var creatorConfig = new Create.CreatorConfig();
+            creatorConfig ??= new Create.CreatorConfig()
+            {
+                backends = new System.Collections.Generic.List<Common.BackendTemplateProperties>()
+            };
 
             foreach (var beResource in backendTemplate.Resources)
             {
                 creatorConfig.backends.Add(new Common.BackendTemplateProperties()
                 {
-                    title = beResource.Name,
-                    url = beResource.Properties.Url,
-                    //protocol = beResource.
+                    title = beResource.Properties.Title,
+                    description = beResource?.Properties?.Description,
+                    //url = beResource?.Properties?.Url,
+                    //protocol = beResource?.Properties?.Protocol,
+                    //credentials = new Common.BackendCredentials()
+                    //{
+                    //    authorization = null,
+                    //    certificate = null,
+                    //    header = beResource?.Properties?.Credentials?.Header,
+                    //    query = null
+
+                    //},
+                    //proxy = null,
+                    //tls = null,
+                    //properties = null,
+                    //resourceId = beResource?.Properties?.ResourceId
                 });
             }
 

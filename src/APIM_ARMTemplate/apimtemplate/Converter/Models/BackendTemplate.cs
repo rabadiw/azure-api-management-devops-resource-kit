@@ -16,28 +16,76 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
         public ApimServiceName ApimServiceName { get; set; }
     }
 
+    public class Query
+    {
+        [JsonProperty("sv")]
+        public List<string> Sv { get; set; }
+    }
+
     public class Header
     {
-        [JsonProperty("x-functions-key")]
-        public List<string> XFunctionsKey { get; set; }
+        [JsonProperty("x-my-1")]
+        public List<string> XMy1 { get; set; }
+    }
+
+    public class Authorization
+    {
+        [JsonProperty("scheme")]
+        public string Scheme { get; set; }
+
+        [JsonProperty("parameter")]
+        public string Parameter { get; set; }
     }
 
     public class Credentials
     {
+        [JsonProperty("query")]
+        public Query Query { get; set; }
+
         [JsonProperty("header")]
         public Header Header { get; set; }
+
+        [JsonProperty("authorization")]
+        public Authorization Authorization { get; set; }
+    }
+
+    public class Proxy
+    {
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
+        [JsonProperty("username")]
+        public string Username { get; set; }
+
+        [JsonProperty("password")]
+        public string Password { get; set; }
+    }
+
+    public class Tls
+    {
+        [JsonProperty("validateCertificateChain")]
+        public bool ValidateCertificateChain { get; set; }
+
+        [JsonProperty("validateCertificateName")]
+        public bool ValidateCertificateName { get; set; }
     }
 
     public class Properties
     {
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonProperty("resourceId")]
-        public string ResourceId { get; set; }
-
         [JsonProperty("credentials")]
         public Credentials Credentials { get; set; }
+
+        [JsonProperty("proxy")]
+        public Proxy Proxy { get; set; }
+
+        [JsonProperty("tls")]
+        public Tls Tls { get; set; }
 
         [JsonProperty("url")]
         public string Url { get; set; }
@@ -59,6 +107,9 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 
         [JsonProperty("apiVersion")]
         public string ApiVersion { get; set; }
+
+        [JsonProperty("dependsOn")]
+        public List<object> DependsOn { get; set; }
     }
 
     public class BackendTemplate
