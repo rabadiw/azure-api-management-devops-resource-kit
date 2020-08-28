@@ -19,9 +19,8 @@
             ]
           },
           "header": {
-            "x-my-1": [
-              "val1",
-              "val2"
+            "x-functions-key": [
+              "{{dts-restore-cosmos-query-key}}"
             ]
           },
           "authorization": {

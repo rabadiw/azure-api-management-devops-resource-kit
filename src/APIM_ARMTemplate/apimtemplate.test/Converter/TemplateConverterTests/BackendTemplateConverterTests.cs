@@ -9,7 +9,7 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Convert
 {
     public class BackendTemplateConverterTests
     {
-        [Fact]
+        [Fact]    
         public async Task ShouldConvertBackendTemplateToCreatorConfig()
         {
             var templatePath = Path.GetFullPath("../../../../apimtemplate/Creator/ExampleGeneratedTemplates");
@@ -20,8 +20,14 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Convert
             var creatorConfig = await converter.ConvertAsync();
 
             creatorConfig.backends.Count.Should().Be(1);
-            creatorConfig.backends.First().title.Should().Be("myBackend");
-            creatorConfig.backends.First().description.Should().Be("description5308");
+            
+            var backend = creatorConfig.backends.First();
+            backend.title.Should().Be("myBackend");
+            backend.description.Should().Be("description5308");
+            backend.url.Should().Be("https://backendname2644/");
+            backend.protocol.Should().Be("http");
+            backend.credentials.Should().NotBeNull();
+            backend.credentials.header.Should().BeEquivalentTo(new { foo = "[2, 3]"});
         }
     }
 }

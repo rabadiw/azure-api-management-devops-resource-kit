@@ -28,16 +28,16 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
                 {
                     title = beResource.Properties.Title,
                     description = beResource?.Properties?.Description,
-                    //url = beResource?.Properties?.Url,
-                    //protocol = beResource?.Properties?.Protocol,
-                    //credentials = new Common.BackendCredentials()
-                    //{
-                    //    authorization = null,
-                    //    certificate = null,
-                    //    header = beResource?.Properties?.Credentials?.Header,
-                    //    query = null
+                    url = beResource?.Properties?.Url,
+                    protocol = beResource?.Properties?.Protocol,
+                    credentials = new Common.BackendCredentials()
+                    {
+                        // authorization = null,
+                        // certificate = null,
+                        header = beResource?.Properties?.Credentials?.Header,
+                        // query = null
 
-                    //},
+                    },
                     //proxy = null,
                     //tls = null,
                     //properties = null,
