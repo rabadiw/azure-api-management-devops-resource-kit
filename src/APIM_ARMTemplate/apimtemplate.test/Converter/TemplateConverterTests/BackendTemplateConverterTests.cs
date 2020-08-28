@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Convert
         [Fact]
         public async Task ShouldConvertBackendTemplateToCreatorConfig()
         {
-            var templatePath = Path.GetDirectoryName(@"C:\Users\Wael\proj\github.com\Azure\azure-api-management-devops-resource-kit\src\APIM_ARMTemplate\apimtemplate\Creator\ExampleGeneratedTemplates\");
+            var templatePath = Path.GetFullPath("../../../../apimtemplate/Creator/ExampleGeneratedTemplates");
             var backendPaths = ConverterExtensions.GetBackendsTemplateJson(templatePath);
 
             var backendJsonFile = backendPaths.First();
@@ -22,7 +22,6 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Convert
             creatorConfig.backends.Count.Should().Be(1);
             creatorConfig.backends.First().title.Should().Be("myBackend");
             creatorConfig.backends.First().description.Should().Be("description5308");
-            
         }
     }
 }
