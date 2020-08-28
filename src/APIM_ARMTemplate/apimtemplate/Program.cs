@@ -11,6 +11,7 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates
     {
         public bool create { get; set; }
         public string extract { get; set; }
+        public string convert { get; set; }
     }
 
     class Program
@@ -18,19 +19,21 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates
         public static int Main(string[] args)
         {
             try
-            {   
-                var app = new CommandLineApplication() 
+            {
+                var app = new CommandLineApplication()
                 {
                     Name = GlobalConstants.AppShortName,
                     FullName = GlobalConstants.AppLongName,
-                    Description = GlobalConstants.AppDescription
+                    Description = GlobalConstants.AppDescription,
                 };
-                
+
                 app.HelpOption(inherited: true);
                 app.Commands.Add(new CreateCommand());
                 app.Commands.Add(new ExtractCommand());
-                
-                app.OnExecute(() => {
+                app.Commands.Add(new ConvertCommand());
+
+                app.OnExecute(() =>
+                {
                     ColoredConsole.Error.WriteLine("No commands specified, please specify a command");
                     app.ShowHelp();
                     return 1;
