@@ -1,0 +1,137 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "description": "myFirstAPI",
+        "authenticationSettings": {
+          "oAuth2": {
+            "authorizationServerId": "myAuthServer",
+            "scope": "myScope"
+          },
+          "subscriptionKeyRequired": false
+        },
+        "type": "http",
+        "apiRevision": "1",
+        "apiVersion": "v1",
+        "isCurrent": true,
+        "apiRevisionDescription": "My first revision",
+        "apiVersionDescription": "My first version",
+        "apiVersionSetId": "[resourceId('Microsoft.ApiManagement/service/apiVersionSets', parameters('ApimServiceName'), 'myAPIVersionSetID')]",
+        "subscriptionRequired": true,
+        "displayName": "myAPI",
+        "serviceUrl": "http://myApiBackendUrl.com",
+        "path": "conf",
+        "protocols": [
+          "https"
+        ],
+        "apiType": "http"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/myAPI')]",
+      "type": "Microsoft.ApiManagement/service/apis",
+      "apiVersion": "2019-01-01",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "value": "<policies>\n  <inbound>\n    <base />\n  </inbound>\n  <backend>\n    <base />\n  </backend>\n  <outbound>\n    <set-header name=\"X-Powered-By\" exists-action=\"delete\" />\n    <set-header name=\"X-AspNet-Version\" exists-action=\"delete\" />\n    <base />\n  </outbound>\n  <on-error>\n    <base />\n  </on-error>\n</policies>",
+        "format": "rawxml"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/myAPI/policy')]",
+      "type": "Microsoft.ApiManagement/service/apis/policies",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'myAPI')]"
+      ]
+    },
+    {
+      "properties": {
+        "value": "<policies>\n  <inbound>\n    <rate-limit-by-key calls=\"3\" renewal-period=\"15\" counter-key=\"@(context.Subscription.Id)\" />\n    <base />\n  </inbound>\n  <backend>\n    <base />\n  </backend>\n  <outbound>\n    <base />\n  </outbound>\n  <on-error>\n    <base />\n  </on-error>\n</policies>",
+        "format": "rawxml"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/myAPI/addPet/policy')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'myAPI')]"
+      ]
+    },
+    {
+      "properties": {
+        "value": "<policies>\n  <inbound>\n    <rate-limit-by-key calls=\"3\" renewal-period=\"15\" counter-key=\"@(context.Subscription.Id)\" />\n    <base />\n  </inbound>\n  <backend>\n    <base />\n  </backend>\n  <outbound>\n    <base />\n  </outbound>\n  <on-error>\n    <base />\n  </on-error>\n</policies>",
+        "format": "rawxml"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/myAPI/deletePet/policy')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'myAPI')]"
+      ]
+    },
+    {
+      "properties": {},
+      "name": "[concat(parameters('ApimServiceName'), '/starter/myAPI')]",
+      "type": "Microsoft.ApiManagement/service/products/apis",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'myAPI')]"
+      ]
+    },
+    {
+      "properties": {},
+      "name": "[concat(parameters('ApimServiceName'), '/platinum/myAPI')]",
+      "type": "Microsoft.ApiManagement/service/products/apis",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'myAPI')]"
+      ]
+    },
+    {
+      "properties": {
+        "alwaysLog": "allErrors",
+        "loggerId": "[resourceId('Microsoft.ApiManagement/service/loggers', parameters('ApimServiceName'), 'myAppInsights')]",
+        "sampling": {
+          "samplingType": "fixed",
+          "percentage": 50.0
+        },
+        "frontend": {
+          "request": {
+            "body": {
+              "bytes": 512
+            }
+          },
+          "response": {
+            "body": {
+              "bytes": 512
+            }
+          }
+        },
+        "backend": {
+          "request": {
+            "body": {
+              "bytes": 512
+            }
+          },
+          "response": {
+            "body": {
+              "bytes": 512
+            }
+          }
+        },
+        "enableHttpCorrelationHeaders": true
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/myAPI/applicationinsights')]",
+      "type": "Microsoft.ApiManagement/service/apis/diagnostics",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'myAPI')]"
+      ]
+    }
+  ]
+}

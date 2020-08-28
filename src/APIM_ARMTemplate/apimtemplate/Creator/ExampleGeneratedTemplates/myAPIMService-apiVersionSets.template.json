@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "displayName": "swaggerPetstoreVersionSetLinked",
+        "description": "a description",
+        "versionQueryName": "versionQuery",
+        "versionHeaderName": "versionHeader",
+        "versioningScheme": "Query"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/myAPIVersionSetID')]",
+      "type": "Microsoft.ApiManagement/service/apiVersionSets",
+      "apiVersion": "2019-01-01",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "displayName": "secondSet",
+        "description": "another description",
+        "versionQueryName": "versionQuery",
+        "versionHeaderName": "versionHeader",
+        "versioningScheme": "Header"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/secondAPIVersionSetID')]",
+      "type": "Microsoft.ApiManagement/service/apiVersionSets",
+      "apiVersion": "2019-01-01",
+      "dependsOn": []
+    }
+  ]
+}

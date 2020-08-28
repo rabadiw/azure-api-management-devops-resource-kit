@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "description": "test server",
+        "authorizationMethods": [
+          "GET"
+        ],
+        "tokenEndpoint": "https://www.contoso.com/oauth2/token",
+        "supportState": true,
+        "defaultScope": "read write",
+        "bearerTokenSendingMethods": [
+          "authorizationHeader"
+        ],
+        "clientSecret": "2",
+        "resourceOwnerUsername": "un",
+        "resourceOwnerPassword": "pwd",
+        "displayName": "myAuthServer",
+        "clientRegistrationEndpoint": "https://www.contoso.com/apps",
+        "authorizationEndpoint": "https://www.contoso.com/oauth2/auth",
+        "grantTypes": [
+          "authorizationCode",
+          "implicit"
+        ],
+        "clientId": "1"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/myAuthServer')]",
+      "type": "Microsoft.ApiManagement/service/authorizationServers",
+      "apiVersion": "2019-01-01",
+      "dependsOn": []
+    }
+  ]
+}

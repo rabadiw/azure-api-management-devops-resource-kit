@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "secret": false,
+        "displayName": "Test",
+        "value": "Item 1"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/Test')]",
+      "type": "Microsoft.ApiManagement/service/properties",
+      "apiVersion": "2019-01-01",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "secret": false,
+        "displayName": "Test2",
+        "value": "Item 2"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/Test2')]",
+      "type": "Microsoft.ApiManagement/service/properties",
+      "apiVersion": "2019-01-01",
+      "dependsOn": []
+    }
+  ]
+}

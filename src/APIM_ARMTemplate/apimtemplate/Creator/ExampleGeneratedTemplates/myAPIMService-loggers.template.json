@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "loggerType": "applicationInsights",
+        "description": "a test app insights",
+        "credentials": {
+          "instrumentationKey": "45d4v88-fdfs-4b35-9232-731d82d4d1c6"
+        },
+        "isBuffered": true
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/myAppInsights')]",
+      "type": "Microsoft.ApiManagement/service/loggers",
+      "apiVersion": "2019-01-01",
+      "dependsOn": []
+    }
+  ]
+}
