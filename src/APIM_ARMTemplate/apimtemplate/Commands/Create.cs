@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using apimtemplate.Creator.Utilities;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Create
 {
@@ -172,7 +173,8 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Create
                     {
                         fileWriter.WriteJSONToFile(authorizationServersTemplate, String.Concat(creatorConfig.outputLocation, fileNames.authorizationServers));
                     }
-                    if (tagTemplate != null) {
+                    if (tagTemplate != null)
+                    {
                         fileWriter.WriteJSONToFile(tagTemplate, String.Concat(creatorConfig.outputLocation, fileNames.tags));
                     }
 

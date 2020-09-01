@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 {
@@ -22,11 +24,11 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
         public List<string> Sv { get; set; }
     }
 
-    public class Header
-    {
-        [JsonProperty("x-my-1")]
-        public List<string> XMy1 { get; set; }
-    }
+    //public class Header 
+    //{
+    //    [JsonProperty("x-my-1")]
+    //    public List<string> XMy1 { get; set; }
+    //}
 
     public class Authorization
     {
@@ -43,7 +45,7 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
         public Query Query { get; set; }
 
         [JsonProperty("header")]
-        public Header Header { get; set; }
+        public Dictionary<string, object> Header { get; set; }
 
         [JsonProperty("authorization")]
         public Authorization Authorization { get; set; }
