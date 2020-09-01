@@ -32,28 +32,11 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Convert
             backend.url.Should().Be("https://backendname2644/");
             backend.protocol.Should().Be("http");
             backend.credentials.Should().NotBeNull();
-            backend.credentials.header.Should()
-                .BeEquivalentTo(JObject.Parse(@"{""x-functions-key"": [ ""{{dts-restore-cosmos-query-key}}""]}"));
 
+            var yamlSerializer = new YamlDotNet.Serialization.SerializerBuilder()
+                .Build();
 
-            //var yamlSerializer = new YamlDotNet.Serialization.SerializerBuilder()
-            //    .WithTypeResolver()
-            //    .Build();
-
-            //var yamlResult = yamlSerializer.Serialize(creatorConfig);
-        }
-    }
-
-    public class JArrayTypeResolver : ITypeResolver
-    {
-        public Type Resolve(Type staticType, object? actualValue)
-        {
-            if (actualValue is JArray actualJArrayValue)
-            {
-                return typeof(List<object>);
-            }
-
-            return actualValue?.GetType();
+            var yamlResult = yamlSerializer.Serialize(creatorConfig);
         }
     }
 }

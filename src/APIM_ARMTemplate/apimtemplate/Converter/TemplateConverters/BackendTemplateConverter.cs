@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Dynamic;
+using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -22,19 +23,19 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
                 backends = new System.Collections.Generic.List<Common.BackendTemplateProperties>()
             };
 
-            foreach (var beResource in backendTemplate.Resources)
+            foreach (var beResource in backendTemplate.resources)
             {
                 creatorConfig.backends.Add(new Common.BackendTemplateProperties()
                 {
-                    title = beResource.Properties.Title,
-                    description = beResource?.Properties?.Description,
-                    url = beResource?.Properties?.Url,
-                    protocol = beResource?.Properties?.Protocol,
+                    title = beResource.properties.title,
+                    description = beResource?.properties?.description,
+                    url = beResource?.properties?.url,
+                    protocol = beResource?.properties?.protocol,
                     credentials = new Common.BackendCredentials()
                     {
                         // authorization = null,
                         // certificate = null,
-                        header = beResource?.Properties?.Credentials?.Header,
+                        header = beResource?.properties?.credentials?.header,
                         // query = null
 
                     },
@@ -51,11 +52,11 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 
     public static class ConverterExtensions
     {
-        public static BackendTemplate DeserializeBackendTemplate(string templatePath)
+        public static dynamic DeserializeBackendTemplate(string templatePath)
         {
             using StreamReader r = new StreamReader(templatePath);
             string backendJson = r.ReadToEnd();
-            return JsonConvert.DeserializeObject<BackendTemplate>(backendJson);
+            return JsonConvert.DeserializeObject<ExpandoObject>(backendJson);
         }
 
         public static string[] GetBackendsTemplateJson(string templatePath) =>

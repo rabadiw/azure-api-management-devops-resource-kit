@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common
     {
         public string[] certificate { get; set; }
         public object query { get; set; }
-        public object header { get; set; }
+        public dynamic header { get; set; }
         public BackendCredentialsAuthorization authorization { get; set; }
     }
 
