@@ -19,8 +19,8 @@
             ]
           },
           "header": {
-            "x-functions-key": [
-              "{{dts-restore-cosmos-query-key}}"
+            "x-my-1": [
+              "val1", "val2"
             ]
           },
           "authorization": {
@@ -34,8 +34,8 @@
           "password": "opensesame"
         },
         "tls": {
-          "validateCertificateChain": false,
-          "validateCertificateName": false
+          "validateCertificateChain": true,
+          "validateCertificateName": true
         },
         "url": "https://backendname2644/",
         "protocol": "http"

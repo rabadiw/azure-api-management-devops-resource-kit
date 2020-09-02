@@ -2,11 +2,13 @@
 using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common;
 
 namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 {
     public class BackendTemplateConverter
     {
+        
         public BackendTemplateConverter(string backendTemplateFile)
         {
             BackendTemplateFile = backendTemplateFile;
@@ -17,12 +19,11 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
         public Task<Create.CreatorConfig> ConvertAsync(Create.CreatorConfig creatorConfig = null)
         {
             var backendTemplate = ConverterExtensions.DeserializeBackendTemplate(BackendTemplateFile);
-
             creatorConfig ??= new Create.CreatorConfig()
             {
                 backends = new System.Collections.Generic.List<Common.BackendTemplateProperties>()
             };
-
+            
             foreach (var beResource in backendTemplate.resources)
             {
                 creatorConfig.backends.Add(new Common.BackendTemplateProperties()
@@ -33,16 +34,22 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
                     protocol = beResource?.properties?.protocol,
                     credentials = new Common.BackendCredentials()
                     {
-                        // authorization = null,
-                        // certificate = null,
+                        authorization = beResource?.properties?.credentials?.authorization,
                         header = beResource?.properties?.credentials?.header,
-                        // query = null
-
+                        query = beResource?.properties?.credentials?.query,
                     },
-                    //proxy = null,
-                    //tls = null,
-                    //properties = null,
-                    //resourceId = beResource?.Properties?.ResourceId
+                    proxy = new BackendProxy
+                    {
+                        url = beResource?.properties?.proxy?.url,
+                        username = beResource?.properties?.proxy?.username,
+                        password = beResource?.properties?.proxy?.password,
+                    },
+                        
+                    tls = new BackendTLS
+                    {
+                        validateCertificateChain = beResource?.properties?.tls?.validateCertificateChain,
+                        validateCertificateName = beResource?.properties?.tls?.validateCertificateName,
+                    }
                 });
             }
 

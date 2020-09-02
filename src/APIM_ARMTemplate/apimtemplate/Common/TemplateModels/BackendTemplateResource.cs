@@ -42,9 +42,9 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common
     public class BackendCredentials
     {
         public string[] certificate { get; set; }
-        public object query { get; set; }
+        public dynamic query { get; set; }
         public dynamic header { get; set; }
-        public BackendCredentialsAuthorization authorization { get; set; }
+        public dynamic authorization { get; set; }
     }
 
     public class BackendCredentialsAuthorization
