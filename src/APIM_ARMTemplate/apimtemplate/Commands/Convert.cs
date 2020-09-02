@@ -2,6 +2,7 @@ using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common;
 using System;
 using System.IO;
+using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Converter;
 
 namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 {
@@ -40,12 +41,9 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
                         throw new ArgumentException("Directory is empty.", nameof(templatePath));
                     }
 
-                    // For now work on the backends
-                    foreach (var beJsonFile in ConverterExtensions.GetBackendsTemplateJson(templatePath))
-                    {
-                        new BackendTemplateConverter(templatePath);
-                    }
-
+                    var armConverter = new ArmConverter(templatePath);
+                    var result = await armConverter.ConvertAsync();
+                    Console.WriteLine(result);
 
                     Console.WriteLine("Press any key to exit process:");
 #if DEBUG

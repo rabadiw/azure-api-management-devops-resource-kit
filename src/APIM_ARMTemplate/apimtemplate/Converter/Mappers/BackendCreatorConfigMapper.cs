@@ -6,19 +6,19 @@ using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common;
 
 namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 {
-    public class BackendTemplateConverter
+    public class BackendCreatorConfigMapper
     {
         
-        public BackendTemplateConverter(string backendTemplateFile)
+        public BackendCreatorConfigMapper(string backendTemplateFile)
         {
-            BackendTemplateFile = backendTemplateFile;
+            _backendTemplateFile = backendTemplateFile;
         }
 
-        public string BackendTemplateFile { get; }
+        private readonly string _backendTemplateFile; 
 
         public Task<Create.CreatorConfig> ConvertAsync(Create.CreatorConfig creatorConfig = null)
         {
-            var backendTemplate = ConverterExtensions.DeserializeBackendTemplate(BackendTemplateFile);
+            var backendTemplate = ConverterExtensions.DeserializeBackendTemplate(_backendTemplateFile);
             creatorConfig ??= new Create.CreatorConfig()
             {
                 backends = new System.Collections.Generic.List<Common.BackendTemplateProperties>()
