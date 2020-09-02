@@ -1,4 +1,5 @@
-﻿using System.Dynamic;
+﻿using System.Collections.Generic;
+using System.Dynamic;
 using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
@@ -8,13 +9,12 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 {
     public class BackendCreatorConfigMapper
     {
-        
         public BackendCreatorConfigMapper(string backendTemplateFile)
         {
             _backendTemplateFile = backendTemplateFile;
         }
 
-        private readonly string _backendTemplateFile; 
+        private readonly string _backendTemplateFile;
 
         public Task<Create.CreatorConfig> ConvertAsync(Create.CreatorConfig creatorConfig = null)
         {
@@ -23,33 +23,54 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
             {
                 backends = new System.Collections.Generic.List<Common.BackendTemplateProperties>()
             };
-            
+
             foreach (var beResource in backendTemplate.resources)
             {
+                var root = beResource as IDictionary<string, object>;
+                var properties = (root?.ContainsKey("properties")).GetValueOrDefault()
+                    ? beResource?.properties as IDictionary<string, object>
+                    : null;
+                var credentials = (properties?.ContainsKey("credentials")).GetValueOrDefault()
+                    ? beResource?.properties?.credentials as IDictionary<string, object>
+                    : null;
+                var proxy = (properties?.ContainsKey("proxy")).GetValueOrDefault()
+                    ? beResource?.properties?.proxy as IDictionary<string, object>
+                    : null;
+
+                var tls = (properties?.ContainsKey("tls")).GetValueOrDefault()
+                    ? beResource?.properties?.tls as IDictionary<string, object>
+                    : null;
+
                 creatorConfig.backends.Add(new Common.BackendTemplateProperties()
                 {
-                    title = beResource.properties.title,
-                    description = beResource?.properties?.description,
-                    url = beResource?.properties?.url,
-                    protocol = beResource?.properties?.protocol,
+                    title = properties?.GetValueOrDefault<string>("title"),
+                    description = properties?.GetValueOrDefault<string>("description"),
+                    url = properties?.GetValueOrDefault<string>("url"),
+                    protocol = properties?.GetValueOrDefault<string>("protocol"),
                     credentials = new Common.BackendCredentials()
                     {
-                        authorization = beResource?.properties?.credentials?.authorization,
-                        header = beResource?.properties?.credentials?.header,
-                        query = beResource?.properties?.credentials?.query,
+                        authorization = credentials?.GetValueOrDefault<object>("authorization"),
+                        header = credentials?.GetValueOrDefault<object>("header"),
+                        query = credentials?.GetValueOrDefault<object>("query"),
                     },
-                    proxy = new BackendProxy
-                    {
-                        url = beResource?.properties?.proxy?.url,
-                        username = beResource?.properties?.proxy?.username,
-                        password = beResource?.properties?.proxy?.password,
-                    },
-                        
-                    tls = new BackendTLS
-                    {
-                        validateCertificateChain = beResource?.properties?.tls?.validateCertificateChain,
-                        validateCertificateName = beResource?.properties?.tls?.validateCertificateName,
-                    }
+                    proxy = proxy == null
+                        ? null
+                        : new BackendProxy
+                        {
+                            url = proxy?.GetValueOrDefault<string>("url"),
+                            username = proxy?.GetValueOrDefault<string>("username"),
+                            password = proxy?.GetValueOrDefault<string>("password"),
+                        },
+
+                    tls = tls == null
+                        ? null
+                        : new BackendTLS
+                        {
+                            validateCertificateChain = (tls?.GetValueOrDefault<bool>("validateCertificateChain"))
+                                .GetValueOrDefault(),
+                            validateCertificateName = (tls?.GetValueOrDefault<bool>("validateCertificateName"))
+                                .GetValueOrDefault(),
+                        }
                 });
             }
 
@@ -68,5 +89,15 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
 
         public static string[] GetBackendsTemplateJson(string templatePath) =>
             Directory.GetFiles(templatePath, "*-backends.template.json");
+
+        public static T GetValueOrDefault<T>(this IDictionary<string, object> collection, string key)
+        {
+            if (collection.TryGetValue(key, out var value))
+            {
+                return (T) value;
+            }
+
+            return default;
+        }
     }
 }

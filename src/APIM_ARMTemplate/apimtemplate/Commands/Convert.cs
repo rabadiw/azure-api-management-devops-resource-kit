@@ -1,6 +1,7 @@
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common;
 using System;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Converter;
 
@@ -45,9 +46,12 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
                     var result = await armConverter.ConvertAsync();
                     Console.WriteLine(result);
 
-                    Console.WriteLine("Press any key to exit process:");
 #if DEBUG
-                    Console.ReadKey();
+                    if (Debugger.IsAttached)
+                    {
+                        Console.WriteLine("Press any key to exit process:");
+                        Console.ReadKey();
+                    }
 #endif
                 }
                 catch (Exception ex)
