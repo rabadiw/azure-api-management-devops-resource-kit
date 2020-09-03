@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Create;
 
-namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test
+namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Creator
 {
     public class APITemplateCreatorFactory
     {

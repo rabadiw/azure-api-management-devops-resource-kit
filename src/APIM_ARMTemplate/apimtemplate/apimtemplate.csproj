@@ -8,6 +8,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>apim-templates</ToolCommandName>
     <Version>1.0.0</Version>
+    <RootNamespace>Microsoft.Azure.Management.ApiManagement.ArmTemplates</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

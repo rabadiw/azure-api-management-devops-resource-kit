@@ -6,6 +6,8 @@
     <IsPackable>false</IsPackable>
 
     <ProjectGuid>{7D0C17F8-C0F5-4678-A75F-EB1BE94E3A46}</ProjectGuid>
+
+    <RootNamespace>Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

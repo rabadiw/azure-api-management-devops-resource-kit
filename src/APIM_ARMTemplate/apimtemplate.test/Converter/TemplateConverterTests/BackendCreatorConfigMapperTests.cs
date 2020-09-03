@@ -48,11 +48,6 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Convert
             backend.proxy.password.Should().Be("opensesame");
             backend.tls.validateCertificateChain.Should().BeTrue();
             backend.tls.validateCertificateName.Should().BeTrue();
-            
-            // var yamlSerializer = new YamlDotNet.Serialization.SerializerBuilder()
-            //     .Build();
-            //
-            // var yamlResult = yamlSerializer.Serialize(creatorConfig);
         }
     }
 

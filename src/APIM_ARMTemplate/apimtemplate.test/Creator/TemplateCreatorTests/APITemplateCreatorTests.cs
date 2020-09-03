@@ -1,11 +1,11 @@
-﻿using Xunit;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Create;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
+using Xunit;
 
-namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test
+namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Creator
 {
     public class APITemplateCreatorTests
     {
@@ -133,8 +133,10 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test
             // extract swagger as a local file
 
             var swaggerPath = Path.GetTempFileName();
-            using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("apimtemplate.test.Resources.swaggerPetstorev3.json"))
-            using (var reader = new StreamReader(stream))
+            var testAsm = System.Reflection.Assembly.GetExecutingAssembly();
+            var resourceName = testAsm.GetManifestResourceNames().SingleOrDefault(t => t.EndsWith("Resources.swaggerPetstorev3.json"));
+            using (var stream = testAsm.GetManifestResourceStream(resourceName!))
+            using (var reader = new StreamReader(stream!))
                 File.WriteAllText(swaggerPath, reader.ReadToEnd());
 
             // create API config with local swagger definition
@@ -174,8 +176,10 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test
             // extract swagger as a local file
 
             var openapiPath = Path.GetTempFileName();
-            using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("apimtemplate.test.Resources.swaggerPetstore.yml"))
-            using (var reader = new StreamReader(stream))
+            var testAsm = System.Reflection.Assembly.GetExecutingAssembly();
+            var resourceName = testAsm.GetManifestResourceNames().SingleOrDefault(t => t.EndsWith("Resources.swaggerPetstore.yml"));
+            await using (var stream = testAsm.GetManifestResourceStream(resourceName!))
+            using (var reader = new StreamReader(stream!))
                 File.WriteAllText(openapiPath, reader.ReadToEnd());
 
             // create API config with local swagger definition

@@ -2,7 +2,7 @@
 using System;
 using Xunit;
 
-namespace apimtemplate.test.Extractor
+namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Extractor
 {
     [Trait("Category", "Unit")]
     public class ExtractorConfigTests

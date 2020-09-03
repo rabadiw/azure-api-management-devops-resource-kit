@@ -4,7 +4,7 @@ using McMaster.Extensions.CommandLineUtils;
 using System.IO;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Create;
 
-namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test
+namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.CmdLine
 {
     public class CreateTests
     {

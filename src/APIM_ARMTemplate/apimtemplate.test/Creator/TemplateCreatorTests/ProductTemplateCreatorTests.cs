@@ -1,9 +1,9 @@
-﻿using Xunit;
+﻿using System.Collections.Generic;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Create;
-using System.Collections.Generic;
+using Xunit;
 
-namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test
+namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Creator
 {
     public class ProductTemplateCreatorTests
     {

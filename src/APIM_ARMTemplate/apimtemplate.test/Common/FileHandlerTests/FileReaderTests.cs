@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Create;
 
-namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test
+namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Common
 {
     public class FileReaderTests
     {

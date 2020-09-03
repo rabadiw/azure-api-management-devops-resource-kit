@@ -3,7 +3,7 @@ using Xunit;
 using McMaster.Extensions.CommandLineUtils;
 
 
-namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test
+namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.CmdLine
 {
     public class ExtractTests
     {

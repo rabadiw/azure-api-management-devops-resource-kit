@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using Microsoft.Azure.Management.ApiManagement.ArmTemplates.Common;
 
-namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test
+namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Common
 {
     public class FileWriterTests
     {
