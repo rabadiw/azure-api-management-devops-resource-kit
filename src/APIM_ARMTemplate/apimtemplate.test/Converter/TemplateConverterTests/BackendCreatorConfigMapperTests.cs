@@ -14,19 +14,8 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Convert
 {
     public class BackendCreatorConfigMapperTests
     {
-        [Fact]
-        public async Task Should_map_backend_template_to_creatorConfig()
+        private void AssertBackend(BackendTemplateProperties backend)
         {
-            var templatePath = Path.GetFullPath("../../../../apimtemplate/Creator/ExampleGeneratedTemplates");
-            var backendPaths = ConverterExtensions.GetBackendsTemplateJson(templatePath);
-
-            var backendJsonFile = backendPaths.First();
-            var converter = new BackendCreatorConfigMapper(backendJsonFile);
-            var creatorConfig = await converter.ConvertAsync();
-
-            creatorConfig.backends.Count.Should().Be(1);
-
-            var backend = creatorConfig.backends.First();
             backend.title.Should().Be("myBackend");
             backend.description.Should().Be("description5308");
             backend.url.Should().Be("https://backendname2644/");
@@ -49,33 +38,74 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Test.Convert
             backend.tls.validateCertificateChain.Should().BeTrue();
             backend.tls.validateCertificateName.Should().BeTrue();
         }
+
+        [Fact]
+        public async Task Given_a_backendArmTemplate_with_mulitple_backends_should_map_to_multiple_backend_resources()
+        {
+            var templatePath = Path.GetFullPath("../../../../apimtemplate/Creator/ExampleGeneratedTemplates");
+            var backendPaths = ConverterExtensions.GetBackendsTemplateJson(templatePath);
+
+            var backendJsonFile = backendPaths.First();
+            var converter = new BackendCreatorConfigMapper(backendJsonFile);
+            var creatorConfig = await converter.ConvertAsync();
+
+            creatorConfig.backends.Count.Should().Be(2);
+
+            foreach (var backend in creatorConfig.backends)
+            {
+                AssertBackend(backend);
+            }
+        }
     }
 
     public class Given_a_valid_backendArm_template_when_converting
     {
-        private const string expectedYaml = @"title: myBackend
-description: description5308
-url: https://backendname2644/
-protocol: http
-credentials:
-  query: 
-    sv: 
-      - xx
-      - bb
-  header: 
-    x-my-1:
-      - val1
-      - val2
-  authorization: 
-    scheme: Basic
-    parameter: opensesma
-proxy:
-  url: http://192.168.1.1:8080
-  username: Contoso\admin
-  password: opensesame
-tls:
-  validateCertificateChain: true
-  validateCertificateName: true";
+        private const string expectedYaml = @"- title: myBackend
+  description: description5308
+  url: https://backendname2644/
+  protocol: http
+  credentials:
+    query: 
+      sv: 
+        - xx
+        - bb
+    header: 
+      x-my-1:
+        - val1
+        - val2
+    authorization: 
+      scheme: Basic
+      parameter: opensesma
+  proxy:
+    url: http://192.168.1.1:8080
+    username: Contoso\admin
+    password: opensesame
+  tls:
+    validateCertificateChain: true
+    validateCertificateName: true
+- title: myBackend
+  description: description5308
+  url: https://backendname2644/
+  protocol: http
+  credentials:
+    query: 
+      sv: 
+        - xx
+        - bb
+    header: 
+      x-my-1:
+        - val1
+        - val2
+    authorization: 
+      scheme: Basic
+      parameter: opensesma
+  proxy:
+    url: http://192.168.1.1:8080
+    username: Contoso\admin
+    password: opensesame
+  tls:
+    validateCertificateChain: true
+    validateCertificateName: true";
         
         [Fact]
         public async Task Should_generate_valid_creatorConfig_yaml()
@@ -86,8 +116,8 @@ tls:
             var result = await sut.ConvertAsync();
             
             var deserializer = new Deserializer();
-            var expectedBackendObject = deserializer.Deserialize<BackendTemplateProperties>(expectedYaml);
-            var resultObject = deserializer.Deserialize<BackendTemplateProperties>(result);
+            var expectedBackendObject = deserializer.Deserialize<BackendTemplateProperties[]>(expectedYaml);
+            var resultObject = deserializer.Deserialize<BackendTemplateProperties[]>(result);
             
             resultObject.Should().BeEquivalentTo(expectedBackendObject);
         }

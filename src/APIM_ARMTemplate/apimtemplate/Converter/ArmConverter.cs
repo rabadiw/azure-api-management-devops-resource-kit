@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Converter
             
             var yamlSerializer = new YamlDotNet.Serialization.SerializerBuilder().Build();
             
-            return yamlSerializer.Serialize(creatorConfig.backends[0]);
+            return yamlSerializer.Serialize(creatorConfig.backends);
         }
     }
 }

@@ -36,7 +36,6 @@ namespace Microsoft.Azure.Management.ApiManagement.ArmTemplates.Convert
                 var proxy = (properties?.ContainsKey("proxy")).GetValueOrDefault()
                     ? beResource?.properties?.proxy as IDictionary<string, object>
                     : null;
-
                 var tls = (properties?.ContainsKey("tls")).GetValueOrDefault()
                     ? beResource?.properties?.tls as IDictionary<string, object>
                     : null;
